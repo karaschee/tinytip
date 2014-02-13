@@ -2,13 +2,14 @@ define("karaschee/tinytip/1.0.0/tinytip-debug", [ "$-debug", "./tinytip-debug.cs
     var $ = require("$-debug");
     require("./tinytip-debug.css");
     var defaults = {
-        txt: "操作进行中，请稍候..."
+        txt: "操作进行中，请稍候"
     };
     var Tinytip = function(options) {
         this.options = $.extend({}, defaults, options);
         // Initialize
-        var wrapper = $('<div class="tinytip_wrapper"></div>');
-        wrapper.html(options.txt);
+        var wrapper = $('<div style="display:none;" class="tinytip_wrapper"></div>');
+        wrapper.html(this.options.txt);
+        $("body").append(wrapper);
         this.wrapper = wrapper;
         Tinytip.tips = Tinytip.tips || [];
         Tinytip.tips.push(this);
