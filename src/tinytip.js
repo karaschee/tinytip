@@ -4,18 +4,28 @@ define(function(require, exports, module) {
   require("./tinytip.css");
 
   var defaults = {
-    txt: '操作进行中，请稍候'
+    txt: '操作进行中，请稍候',
+    container: 'body',
+    css: {}
   };
 
   var Tinytip = function(options){
-    this.options = $.extend({}, defaults, options);
+    options = $.extend({}, defaults, options);
 
     // Initialize
     var wrapper = $('<div style="display:none;" class="tinytip_wrapper"></div>');
-    wrapper.html(this.options.txt);
-    $('body').append(wrapper);
+    var container = $(options.container);
+
+    container.append( wrapper.html(options.txt) );
+    if(!container.is('body')){
+      wrapper.css({'position': 'absolute', 'top': '30px'});
+      container.css({'position': 'relative'});
+    }
+
+    wrapper.css(options.css);
 
     this.wrapper = wrapper;
+    this.options = options;
 
     Tinytip.tips = Tinytip.tips || [];
     Tinytip.tips.push(this);

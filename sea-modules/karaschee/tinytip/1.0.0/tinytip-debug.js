@@ -2,14 +2,28 @@ define("karaschee/tinytip/1.0.0/tinytip-debug", [ "$-debug", "./tinytip-debug.cs
     var $ = require("$-debug");
     require("./tinytip-debug.css");
     var defaults = {
-        txt: "操作进行中，请稍候..."
+        txt: "操作进行中，请稍候",
+        container: "body",
+        css: {}
     };
     var Tinytip = function(options) {
-        this.options = $.extend({}, defaults, options);
+        options = $.extend({}, defaults, options);
         // Initialize
-        var wrapper = $('<div class="tinytip_wrapper"></div>');
-        wrapper.html(options.txt);
+        var wrapper = $('<div style="display:none;" class="tinytip_wrapper"></div>');
+        var container = $(options.container);
+        container.append(wrapper.html(options.txt));
+        if (!container.is("body")) {
+            wrapper.css({
+                position: "absolute",
+                top: "30px"
+            });
+            container.css({
+                position: "relative"
+            });
+        }
+        wrapper.css(options.css);
         this.wrapper = wrapper;
+        this.options = options;
         Tinytip.tips = Tinytip.tips || [];
         Tinytip.tips.push(this);
     };
@@ -34,5 +48,5 @@ define("karaschee/tinytip/1.0.0/tinytip-debug", [ "$-debug", "./tinytip-debug.cs
 });
 
 define("karaschee/tinytip/1.0.0/tinytip-debug.css", [], function() {
-    seajs.importStyle(".tinytip_wrapper{position:fixed;top:0;left:50%;margin-left:-75px;width:154px;padding:10px 10px 10px 30px;font-weight:700;font-size:12px;color:#666;background:url(/images/spinners/octocat-spinner-16px.gif?c9b3efa2) 10px 50% no-repeat #eee;border:1px solid #ddd;border-top:1px solid #fff;border-radius:5px;border-top-left-radius:0;border-top-right-radius:0;z-index:20}");
+    seajs.importStyle(".tinytip_wrapper{position:fixed;top:0;left:50%;margin-left:-75px;width:154px;padding:10px 10px 10px 30px;font-weight:700;font-size:12px;color:#666;background:url(loading.gif) 10px 50% no-repeat #eee;border:1px solid #ddd;border-top:1px solid #fff;border-radius:5px;border-top-left-radius:0;border-top-right-radius:0;z-index:20}");
 });
